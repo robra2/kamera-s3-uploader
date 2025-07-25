@@ -1,5 +1,5 @@
 # Verwende ein aktuelles Python-Image als Basis
-FROM python:3.12-slim-bookworm # Oder python:3.11-slim-bookworm
+FROM python:3.12-slim-bookworm
 
 # Setze Umgebungsvariablen, um interaktive Abfragen während des Builds zu vermeiden
 ENV DEBIAN_FRONTEND=noninteractive
