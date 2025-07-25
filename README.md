@@ -1,0 +1,1 @@
+# kamera-s3-uploader
