@@ -8,7 +8,7 @@ from datetime import datetime
 # ANPASSEN: Dein Kamera RTSP URL
 # Beispiel: "rtsp://user:password@192.168.1.100:554/stream"
 RTSP_URL = "rtsp://admin:112Burger@192.168.178.62:554/h264Preview_01_main"
-S3_BUCKET_NAME = "mein-kamera-log-bilder-2025"             # ANPASSEN: Dein S3 Bucket Name (muss existieren!)
+S3_BUCKET_NAME = "meine-tor-kamera-bilder"             # ANPASSEN: Dein S3 Bucket Name (muss existieren!)
 UPLOAD_INTERVAL_SECONDS = 5                                # Wie oft ein Bild hochgeladen werden soll (in Sekunden)
 IMAGE_QUALITY = 85                                         # JPEG-Qualität (0-100), 90 ist ein guter Start
 
