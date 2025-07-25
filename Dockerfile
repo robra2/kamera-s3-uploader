@@ -1,11 +1,12 @@
-# Verwende ein schlankes Python-Image als Basis
-FROM python:3.9-slim-buster
+# Verwende ein aktuelles Python-Image als Basis
+FROM python:3.12-slim-bookworm # Oder python:3.11-slim-bookworm
 
 # Setze Umgebungsvariablen, um interaktive Abfragen während des Builds zu vermeiden
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Installiere Systemabhängigkeiten für OpenCV und FFmpeg
-# Die Befehle sind aufgeteilt und bereinigt, um Fehler zu vermeiden
+# Hier können Sie die RUN-Befehle wieder zusammenfassen,
+# sobald Sie das ursprüngliche Installationsproblem gelöst haben.
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libsm6 \
