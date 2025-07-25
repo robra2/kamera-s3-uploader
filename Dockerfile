@@ -1,16 +1,19 @@
 # Verwende ein schlankes Python-Image als Basis
 FROM python:3.9-slim-buster
 
-# Installiere Systemabhängigkeiten für OpenCV
-# libgl1-mesa-glx und libsm6 sind oft für OpenCV nötig, auch in Headless-Versionen
+# Setze Umgebungsvariablen, um interaktive Abfragen während des Builds zu vermeiden
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Installiere Systemabhängigkeiten für OpenCV und FFmpeg
+# Die Befehle sind aufgeteilt und bereinigt, um Fehler zu vermeiden
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libsm6 \
     libxext6 \
     libxrender1 \
     ffmpeg \
-    --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 # Lege das Arbeitsverzeichnis im Container fest
 WORKDIR /app
