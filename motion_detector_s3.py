@@ -39,7 +39,7 @@ def capture_and_upload():
         frame_roi= frame[y:y+h, x:x+w]
 
         # Schritt 2: Rotation vorbereiten
-        (h_c, w_c) = cropped.shape[:2]
+        (h_c, w_c) = frame_roi.shape[:2]
         center = (w_c // 2, h_c // 2)
         angle = 90  # Drehwinkel in Grad
         scale = 1.0
