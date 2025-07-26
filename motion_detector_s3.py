@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import boto3
 import time
 import os
@@ -33,27 +34,40 @@ def capture_and_upload():
 
         # Stream sofort wieder freigeben, um Ressourcen zu schonen
         cap.release() 
-
-        # Schritt 1: Zuschneiden (ROI definieren)
-        x, y, w, h = 1800, 300, 2000, 800
-        frame_roi= frame[y:y+h, x:x+w]
-
-        # Schritt 2: Rotation vorbereiten
-        (h_c, w_c) = frame_roi.shape[:2]
-        center = (w_c // 2, h_c // 2)
-        angle = 90  # Drehwinkel in Grad
-        scale = 1.0
-
-        # Rotationsmatrix erstellen
-        matrix = cv2.getRotationMatrix2D(center, angle, scale)
-
-        # Bild drehen
-        frame_roi_rot = cv2.warpAffine(frame_roi, matrix, (w_c, h_c))
-
+        
         if not ret:
             print("Fehler: Konnte keinen Frame vom Stream lesen (evtl. nur schwarzes Bild?). Nächster Versuch...")
             time.sleep(UPLOAD_INTERVAL_SECONDS)
             continue
+            
+        # ROI-Werte aus Environment lesen
+        x = int(os.environ.get("ROI_X", 0))
+        y = int(os.environ.get("ROI_Y", 0))
+        w = int(os.environ.get("ROI_W", 100))
+        h = int(os.environ.get("ROI_H", 100))
+        frame_roi= frame[y:y+h, x:x+w]
+        
+        
+        (h, w) = frame_roi.shape[:2]
+        center = (w // 2, h // 2)
+        angle = 90
+
+        # Rotationsmatrix
+        M = cv2.getRotationMatrix2D(center, angle, 1.0)
+
+        # Neue Dimensionen berechnen
+        abs_cos = abs(M[0, 0])
+        abs_sin = abs(M[0, 1])
+        new_w = int(h * abs_sin + w * abs_cos)
+        new_h = int(h * abs_cos + w * abs_sin)
+
+        # Matrix anpassen
+        M[0, 2] += new_w / 2 - center[0]
+        M[1, 2] += new_h / 2 - center[1]
+
+        # Bild rotieren
+        frame_roi_rot = cv2.warpAffine(frame_roi, M, (new_w, new_h))
+
 
         timestamp_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         # Generiere einen eindeutigeren Dateinamen, falls mehrere Bilder pro Sekunde hochgeladen werden sollen
