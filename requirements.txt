@@ -1,2 +1,3 @@
 boto3
 opencv-python-headless # 'headless' Version, da wir keine GUI benötigen
+numpy
