@@ -20,9 +20,9 @@ S3_BUCKET_NAME = "meine-tor-kamera-bilder"
 S3_UPLOAD_PREFIX = "bewegungserkennung/"
 
 # Bewegungserkennungs-Parameter
-MIN_AREA = 500      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
-THRESHOLD_DELTA = 50 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
-BLUR_SIZE = (21, 21) # Größe des Gaußschen Weichzeichners
+MIN_AREA = 1500      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
+THRESHOLD_DELTA = 60 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
+BLUR_SIZE = (31, 31) # Größe des Gaußschen Weichzeichners
 
 # Bereich für Bewegungserkennung definieren (optional)
 # Wenn du einen spezifischen Bereich überwachen möchtest, setze USE_ROI auf True
