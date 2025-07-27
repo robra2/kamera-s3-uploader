@@ -20,9 +20,9 @@ S3_BUCKET_NAME = "meine-tor-kamera-bilder"
 S3_UPLOAD_PREFIX = "bewegungserkennung/"
 
 # Bewegungserkennungs-Parameter
-MIN_AREA = 1500      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
+MIN_AREA = 3000      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
 THRESHOLD_DELTA = 60 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
-BLUR_SIZE = (31, 31) # Größe des Gaußschen Weichzeichners
+BLUR_SIZE = (41, 41) # Größe des Gaußschen Weichzeichners
 
 # Bereich für Bewegungserkennung definieren (optional)
 # Wenn du einen spezifischen Bereich überwachen möchtest, setze USE_ROI auf True
@@ -140,12 +140,12 @@ def run_motion_detection():
             continue
 
         # Aktuellen Frame mit dem Durchschnittsframe gewichten
-        cv2.accumulateWeighted(gray, avg_frame, 0.5) # 0.5 ist der Gewichtungsfaktor
+        cv2.accumulateWeighted(gray, avg_frame, 0.2) # 0.5 ist der Gewichtungsfaktor
         frame_delta = cv2.absdiff(gray, cv2.convertScaleAbs(avg_frame))
 
         # Schwellenwert anwenden
         thresh = cv2.threshold(frame_delta, THRESHOLD_DELTA, 255, cv2.THRESH_BINARY)[1]
-        thresh = cv2.dilate(thresh, None, iterations=2) # Dilatieren, um Lücken zu schließen
+        thresh = cv2.dilate(thresh, None, iterations=3) # Dilatieren, um Lücken zu schließen
 
         # Konturen finden
         contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
