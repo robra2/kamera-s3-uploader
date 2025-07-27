@@ -21,7 +21,7 @@ S3_UPLOAD_PREFIX = "bewegungserkennung/"
 
 # Bewegungserkennungs-Parameter
 MIN_AREA = 500      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
-THRESHOLD_DELTA = 5 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
+THRESHOLD_DELTA = 50 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
 BLUR_SIZE = (21, 21) # Größe des Gaußschen Weichzeichners
 
 # Bereich für Bewegungserkennung definieren (optional)
