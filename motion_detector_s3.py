@@ -25,7 +25,7 @@ BLUR_SIZE = (21, 21) # Größe des Gaußschen Weichzeichners
 # Wenn du einen spezifischen Bereich überwachen möchtest, setze USE_ROI auf True
 # und passe die ROI_X, ROI_Y, ROI_WIDTH, ROI_HEIGHT an.
 # Andernfalls bleibt USE_ROI auf False und das gesamte Bild wird überwacht.
-USE_ROI = True
+USE_ROI_INIT = True
 # Werte aus env variablen lesen
 ROI_X = int(os.environ.get("ROI_X", 0))    # X-Koordinate der oberen linken Ecke des Bereichs
 ROI_Y = int(os.environ.get("ROI_Y", 0))    # Y-Koordinate der oberen linken Ecke des Bereichs
@@ -60,6 +60,7 @@ def run_motion_detection():
 
     avg_frame = None
     last_upload_time = 0
+    USE_ROI = USE_ROI_INIT
 
     while True:
         ret, frame = cap.read()
