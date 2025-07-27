@@ -20,9 +20,9 @@ S3_BUCKET_NAME = "meine-tor-kamera-bilder"
 S3_UPLOAD_PREFIX = "bewegungserkennung/"
 
 # Bewegungserkennungs-Parameter
-MIN_AREA = 3000      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
+MIN_AREA = 5000      # Minimale Fläche (in Pixeln) für die Bewegungserkennung
 THRESHOLD_DELTA = 60 # Schwellenwert für die Bilddifferenz (je höher, desto weniger empfindlich)
-BLUR_SIZE = (41, 41) # Größe des Gaußschen Weichzeichners
+BLUR_SIZE = (61, 61) # Größe des Gaußschen Weichzeichners
 
 # Bereich für Bewegungserkennung definieren (optional)
 # Wenn du einen spezifischen Bereich überwachen möchtest, setze USE_ROI auf True
@@ -131,7 +131,7 @@ def run_motion_detection():
 
         # Graustufen und Weichzeichnen für bessere Erkennung
         gray = cv2.cvtColor(frame_for_analysis, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, BLUR_SIZE, 0)
+        gray = cv2.medianBlur(gray, 21)  # Median-Filter gegen Blockrauschen
 
         if avg_frame is None:
             ### DEBUG ###
