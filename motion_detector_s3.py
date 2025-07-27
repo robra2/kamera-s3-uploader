@@ -56,7 +56,7 @@ print("--------------------------")
 
 
 # --- AWS S3 Client initialisieren ---
-### DEBUG ###
+### DEBUG ####
 print("### DEBUG ### Initialisiere AWS S3 Client...")
 s3_client = boto3.client('s3')
 ### DEBUG ###
