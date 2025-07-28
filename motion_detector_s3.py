@@ -92,6 +92,8 @@ def run_motion_detection():
     USE_ROI = USE_ROI_INIT
     frame_count = 0
 
+    Upload_Frames = True
+
     while True:
         ### DEBUG ###
         frame_count += 1
@@ -142,6 +144,16 @@ def run_motion_detection():
         # Aktuellen Frame mit dem Durchschnittsframe gewichten
         cv2.accumulateWeighted(gray, avg_frame, 0.2) # 0.5 ist der Gewichtungsfaktor
         frame_delta = cv2.absdiff(gray, cv2.convertScaleAbs(avg_frame))
+        if Upload_Frames:
+
+            timestamp_delta = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename_delta = f"Delta_{timestamp_delta}.jpg"
+            s3_key_delta = os.path.join(S3_UPLOAD_PREFIX, filename_delta)
+
+            ret_code_delta, _delta = cv2.imencode(".jpg", frame_delta)
+
+            upload_image_to_s3(jpg_buffer.tobytes(), s3_key_delta)
+            Upload_Frames = False # Nur einmal pro Frame hochladen
 
         # Schwellenwert anwenden
         thresh = cv2.threshold(frame_delta, THRESHOLD_DELTA, 255, cv2.THRESH_BINARY)[1]
