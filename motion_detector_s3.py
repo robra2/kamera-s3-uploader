@@ -150,7 +150,7 @@ def run_motion_detection():
             filename_delta = f"Delta_{timestamp_delta}.jpg"
             s3_key_delta = os.path.join(S3_UPLOAD_PREFIX, filename_delta)
 
-            ret_code_delta, jpg_buffer_delta = cv2.imencode(".jpg", frame_delta)
+            ret_code_delta, jpg_buffer_delta = cv2.imencode(".jpg", avg_frame)
 
             upload_image_to_s3(jpg_buffer_delta.tobytes(), s3_key_delta)
             Upload_Frames = False # Nur einmal pro Frame hochladen
