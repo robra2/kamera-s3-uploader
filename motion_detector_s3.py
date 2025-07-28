@@ -116,16 +116,12 @@ def run_motion_detection():
 
         # Optional: Bereich von Interesse (ROI) zuschneiden
         if USE_ROI:
-            ### DEBUG ###
-            print(f"### DEBUG ### ROI ist aktiviert. Schneide Frame zu: Y({ROI_Y}:{ROI_Y+ROI_HEIGHT}), X({ROI_X}:{ROI_X+ROI_WIDTH})")
             frame_for_analysis = frame[ROI_Y:ROI_Y+ROI_HEIGHT, ROI_X:ROI_X+ROI_WIDTH]
             if frame_for_analysis.size == 0: # Prüfen, ob der ROI gültig ist
                 print("Fehler: ROI ist außerhalb des Bildbereichs oder hat keine Größe. Deaktiviere ROI.")
                 USE_ROI = False
                 frame_for_analysis = frame # Fallback auf gesamtes Bild
         else:
-            ### DEBUG ###
-            print("### DEBUG ### ROI ist deaktiviert. Nutze gesamten Frame für Analyse.")
             frame_for_analysis = frame
 
         ### DEBUG ###
@@ -150,7 +146,7 @@ def run_motion_detection():
             filename_delta = f"Delta_{timestamp_delta}.jpg"
             s3_key_delta = os.path.join(S3_UPLOAD_PREFIX, filename_delta)
 
-            ret_code_delta, jpg_buffer_delta = cv2.imencode(".jpg", avg_frame)
+            ret_code_delta, jpg_buffer_delta = cv2.imencode(".jpg", gray)
 
             upload_image_to_s3(jpg_buffer_delta.tobytes(), s3_key_delta)
             Upload_Frames = False # Nur einmal pro Frame hochladen
@@ -190,9 +186,6 @@ def run_motion_detection():
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"bewegung_{timestamp}.jpg"
             s3_key = os.path.join(S3_UPLOAD_PREFIX, filename)
-            
-            ### DEBUG ###
-            print(f"### DEBUG ### Zieldateiname: {s3_key}")
 
             # ROI-Werte aus Environment lesen
             x = int(os.environ.get("ROI_X", 0))
@@ -204,16 +197,10 @@ def run_motion_detection():
             print(f"### DEBUG ### Lese ROI-Werte für Upload-Bild: X={x}, Y={y}, W={w}, H={h}")
             
             frame_roi = frame[y:y+h, x:x+w]
-            
-            ### DEBUG ###
-            print(f"### DEBUG ### Upload-Bild zugeschnitten. Dimensionen: {frame_roi.shape}")
-            
+                        
             (h, w) = frame_roi.shape[:2]
             center = (w // 2, h // 2)
             angle = 90
-
-            ### DEBUG ###
-            print(f"### DEBUG ### Rotiere Bild um {angle} Grad.")
 
             # Rotationsmatrix
             M = cv2.getRotationMatrix2D(center, angle, 1.0)
@@ -224,9 +211,6 @@ def run_motion_detection():
             new_w = int(h * abs_sin + w * abs_cos)
             new_h = int(h * abs_cos + w * abs_sin)
             
-            ### DEBUG ###
-            print(f"### DEBUG ### Neue Dimensionen nach Rotation: {new_w}x{new_h}")
-
             # Matrix anpassen
             M[0, 2] += new_w / 2 - center[0]
             M[1, 2] += new_h / 2 - center[1]
@@ -245,17 +229,8 @@ def run_motion_detection():
                     print(f"### DEBUG ### Upload erfolgreich. last_upload_time auf {last_upload_time} gesetzt.")
             else:
                 print("Fehler beim Kodieren des Bildes.")
-
-    ### DEBUG ###
-    print("### DEBUG ### Hauptschleife beendet.")
     cap.release()
-    ### DEBUG ###
-    print("### DEBUG ### Video-Capture freigegeben.")
     # cv2.destroyAllWindows() # Nur nötig, wenn imshow verwendet wird
 
 if __name__ == "__main__":
-    ### DEBUG ###
-    print("### DEBUG ### Skript wird direkt ausgeführt (__name__ == '__main__').")
     run_motion_detection()
-    ### DEBUG ###
-    print("--- Skript beendet ---")
