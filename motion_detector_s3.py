@@ -186,7 +186,12 @@ def run_motion_detection():
             print(f"### DEBUG ### Lese ROI-Werte für Upload-Bild: X={x}, Y={y}, W={w}, H={h}")
             
             frame_roi = frame[y:y+h, x:x+w]
-                        
+
+            # Prüfen, ob das ROI-Bild gültig ist
+            if frame_roi.size == 0 or frame_roi.shape[0] == 0 or frame_roi.shape[1] == 0:
+                print("Fehler: ROI ist leer oder ungültig. Überspringe diesen Frame.")
+                continue
+            
             (h, w) = frame_roi.shape[:2]
             center = (w // 2, h // 2)
             angle = 90
