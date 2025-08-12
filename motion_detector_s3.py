@@ -11,7 +11,7 @@ print("--- Skript wird gestartet ---")
 # --- Konfiguration ---
 # ANPASSEN: RTSP-Stream URL deiner IP-Kamera
 # Beispiel: rtsp://username:password@192.168.1.100:554/stream
-RTSP_STREAM_URL = "rtsp://192.168.178.26:8554/cam"
+RTSP_STREAM_URL = "rtsp://mediamtx:8554/cam"
 
 # ANPASSEN: Dein S3 Bucket Name
 S3_BUCKET_NAME = "meine-tor-kamera-bilder"
