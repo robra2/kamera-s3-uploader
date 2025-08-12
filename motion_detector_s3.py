@@ -79,6 +79,8 @@ def run_motion_detection():
     ### DEBUG ###
     print("### DEBUG ### Starte run_motion_detection Funktion.")
     cap = cv2.VideoCapture(RTSP_STREAM_URL)
+    cap.set(cv2.CAP_PROP_OPEN_TIMEOUT_MSEC, 5000)  # 5 Sekunden Timeout
+    cap.set(cv2.CAP_PROP_READ_TIMEOUT_MSEC, 5000)  # 5 Sekunden Lese-Timeout
 
     if not cap.isOpened():
         print(f"Fehler: Kann RTSP-Stream nicht öffnen: {RTSP_STREAM_URL}")
